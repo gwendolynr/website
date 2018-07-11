@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Leaflet on Gwendolyn Reynolds</title>
+    <link>/tags/leaflet/</link>
+    <description>Recent content in Leaflet on Gwendolyn Reynolds</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; 2018</copyright>
+    <lastBuildDate>Fri, 28 Jul 2017 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/leaflet/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Mapping Census Data Tutorial</title>
+      <link>/post/mapping-census-data/</link>
+      <pubDate>Fri, 28 Jul 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/post/mapping-census-data/</guid>
+      <description>Mapping ACS Data Leaflet is one of my favorite packages. The color choice brings me an unreasonable amount of joy, as do the slightly translucent city and street names. It’s a gorgeous design that makes maps look sleek and modern.
+Luckily, there is a great, easy to follow, straight forward tutorial here.
+I started with a straight forward project and used ACS table B22002 to map the number of household foodstamp use in every tract in Utah.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Homes on Gwendolyn Reynolds</title>
+    <link>/home/</link>
+    <description>Recent content in Homes on Gwendolyn Reynolds</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; 2018</copyright>
+    <lastBuildDate>Wed, 20 Apr 2016 00:00:00 -0600</lastBuildDate>
+    
+	<atom:link href="/home/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title></title>
+      <link>/home/about/</link>
+      <pubDate>Wed, 20 Apr 2016 00:00:00 -0600</pubDate>
+      
+      <guid>/home/about/</guid>
+      <description>Biography I am a Director of Data Science at the Sorenson Impact Center, an applied academic institution at the University of Utah. My job is to help non-profits, philanthropists, and governments use data to address social problems. We conduct evaluations, collect and analyze data, create dashboards, and run statistical models (when we&amp;rsquo;re lucky). (The opinions reflected on this blog are my own and do not represent the Sorenson Impact Center or the University of Utah.</description>
+    </item>
+    
+    <item>
+      <title>Recent Posts</title>
+      <link>/home/posts/</link>
+      <pubDate>Wed, 20 Apr 2016 00:00:00 -0600</pubDate>
+      
+      <guid>/home/posts/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Projects</title>
+      <link>/home/projects/</link>
+      <pubDate>Wed, 20 Apr 2016 00:00:00 -0600</pubDate>
+      
+      <guid>/home/projects/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Media</title>
+      <link>/home/talks/</link>
+      <pubDate>Wed, 20 Apr 2016 00:00:00 +0000</pubDate>
+      
+      <guid>/home/talks/</guid>
+      <description>&amp;ldquo;North Coast preschool advocates prepare for pilot study&amp;rdquo;, Daily Astorian, July 6, 2018.
+&amp;ldquo;What This Salt Lake City Heatmap Tells Us About Drug Crime&amp;rdquo;, CityLab, August 11, 2017.
+&amp;ldquo;Is Utah&amp;rsquo;s prison reform working?&amp;rdquo;, Deseret News, August 5th, 2017.
+&amp;ldquo;Roth vs. Traditional 401(k): Study Finds a Clear Winner&amp;rdquo;, Wall Street Journal, June 11, 2017.
+&amp;ldquo;Why Don&amp;rsquo;t More People Get Flu Shots at Work?&amp;rdquo;, Harvard Business School, October 5, 2016.
+&amp;ldquo;Don&amp;rsquo;t Compare Your Savings to That of Your Peers&amp;rdquo;, Wall Street Journal, September 20, 2015.</description>
+    </item>
+    
+    <item>
+      <title>Publications</title>
+      <link>/home/publications/</link>
+      <pubDate>Wed, 20 Apr 2016 00:00:00 -0600</pubDate>
+      
+      <guid>/home/publications/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Tags</title>
+      <link>/home/tags/</link>
+      <pubDate>Wed, 20 Sep 2017 00:00:00 -0600</pubDate>
+      
+      <guid>/home/tags/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Contact</title>
+      <link>/home/contact/</link>
+      <pubDate>Wed, 20 Apr 2016 00:00:00 -0600</pubDate>
+      
+      <guid>/home/contact/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

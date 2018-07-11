@@ -1,0 +1,231 @@
+---
+title: "Mapping Census Data Tutorial"
+author: "Gwendolyn"
+date: 2017-07-28
+categories: ["R"]
+tags: ["maps", "acs", "leaflet"]
+---
+
+
+# Mapping ACS Data
+
+Leaflet is one of my favorite packages. The color choice brings me an unreasonable amount of joy, as do the slightly translucent city and street names. It's a gorgeous design that makes maps look sleek and modern.
+
+Luckily, there is a great, easy to follow, straight forward tutorial [here.](http://zevross.com/blog/2015/10/14/manipulating-and-mapping-us-census-data-in-r-using-the-acs-tigris-and-leaflet-packages-3/) 
+
+I started with a straight forward project and used ACS table B22002 to map the number of household foodstamp use in every tract in Utah. Census data aggregates at a number of different geographies. It will aggregate at the state level, the county level, school district level, and the tract level, which is the smallest and allows you to follow quite a few trends. 
+
+Below is the code I used and the pretty map it generated. 
+
+
+```{r utah food stamp map set up, message=FALSE, warning=FALSE, results='hide'}
+
+## These are the packages you'll need. tigris, acs, and leaflet do all of the heavy 
+## lifting. If you don't have them yet, use install.packages and then load them up below. 
+
+library(tigris)
+library(acs)
+library(stringr)
+library(dplyr)
+library(leaflet)
+library(ggplot2)
+library(tidyr)
+
+## The acs and tigris packages need the FIPS number for your geography. 
+## I found the FIPS number for every Utah County. You can google around 
+## to find these manually. 
+
+counties <- c(001, 003, 005, 007, 009, 011, 013, 015, 017, 019, 
+              021, 023, 025, 027, 029, 031, 033, 035, 037, 039, 
+              041, 043, 045, 047, 049, 051, 053, 055, 057)
+tracts <- tracts(state = 'UT', county = c(001, 003, 005, 007, 009, 
+                                          011, 013, 015, 017, 019, 021, 
+                                          023, 025, 027, 029, 031, 033, 
+                                          035, 037, 039, 041, 043, 045, 
+                                          047, 049, 051, 053, 055, 057), cb=TRUE)
+
+## You will need to get an api key from the Census Website. 
+## You can request a key here: http://api.census.gov/data/key_signup.html. 
+## They will send you an email with an api key. The code below takes the 
+## key and sends it to the Census so you can access their tables.
+```
+
+api.key.install(key="getyourown")
+
+```{r api key, include=FALSE}
+api.key.install(key="0cdac4dbbd32b4e4874b79ce6e8fee07d12a7b3a")
+
+```
+
+```{r setup, message=FALSE, warning=FALSE, progress=TRUE, cache=TRUE}
+## We now need to create a geographic data set (a spatial data set) so you can grab the tigris and acs data. I specify the state, I specify the counties (using the FIPS numbers I looked up). See how tract has a "*"? That's because we are telling tigris to grab every tract within all of the counties listed. 
+
+geo <- geo.make(state=c("UT"), 
+                county=c(001, 003, 005, 007, 009, 011, 013, 015, 017, 019, 021, 023, 025, 027, 029, 031, 033, 035, 037, 039, 041, 043, 045, 047, 049, 051, 053, 055, 057), tract="*") 
+
+## Now we need to fetch the acs data, using the acs package function acs.fetch. I specify the end year, which you should know once you decide which table you want. I found my table using this handy website: https://censusreporter.org/topics/table-codes/ I also specify that my geography should be the geo data I pulled above. I tell the column names to look pretty for me. 
+
+poverty <- acs.fetch(endyear = 2015, span = 5, geography = geo, 
+                     table.number = "B22002", col.names = "pretty")
+
+#names(attributes(poverty))
+# [1] "endyear"        "span"           "acs.units"      "currency.year"  "modified"       "geography"      "acs.colnames"  
+# [8] "estimate"       "standard.error" "class"    
+
+## Comment in the line below to see the column names. Hopefully you have a pretty good idea which column names you want to use, since you've already looked through the table at censusreporter.org
+
+#attr(poverty, "acs.colnames")
+
+## I've decided which columns I want to use, and now I need to convert my file to a data frame so I can merge it. str_pad adds extra numbers to each specified variable (state, county, and tract), because it won't merge if we don't add leading zeros! Don't get scared, this should run pretty smoothly. Finally, paste in the column names you want to keep in poverty@estimate. I'm keeping a bunch b/c I'm crazy.  
+
+poverty_df <- data.frame(paste0(str_pad(poverty@geography$state, 2, "left", pad="0"), 
+                                str_pad(poverty@geography$county, 3, "left", pad = "0"), 
+                                str_pad(poverty@geography$tract, 6, "left", pad = "0")), 
+                         poverty@estimate[,c("Receipt of Food Stamps/SNAP by Presence of Children Under 18 Years by Household Type for Households: Household did not receive Food Stamps/SNAP in the past 12 months:", "Receipt of Food Stamps/SNAP by Presence of Children Under 18 Years by Household Type for Households: Household received Food Stamps/SNAP in the past 12 months:", "Receipt of Food Stamps/SNAP by Presence of Children Under 18 Years by Household Type for Households: Household received Food Stamps/SNAP in the past 12 months: With children under 18 years:", "Receipt of Food Stamps/SNAP by Presence of Children Under 18 Years by Household Type for Households: Household received Food Stamps/SNAP in the past 12 months: With children under 18 years: Married-couple family", "Receipt of Food Stamps/SNAP by Presence of Children Under 18 Years by Household Type for Households: Household received Food Stamps/SNAP in the past 12 months: With children under 18 years: Other family:","Receipt of Food Stamps/SNAP by Presence of Children Under 18 Years by Household Type for Households: Household received Food Stamps/SNAP in the past 12 months: With children under 18 years: Other family: Male householder, no wife present", "Receipt of Food Stamps/SNAP by Presence of Children Under 18 Years by Household Type for Households: Household received Food Stamps/SNAP in the past 12 months: With children under 18 years: Other family: Female householder, no husband present", "Receipt of Food Stamps/SNAP by Presence of Children Under 18 Years by Household Type for Households: Household received Food Stamps/SNAP in the past 12 months: With children under 18 years: Nonfamily households")], 
+                         stringsAsFactors = FALSE)
+
+## Ok, now you need to shape the data frame, by selecting which columns you want and naming each row. I also create a percent variable, which is the percent of households on food stamps that have children. GEOID is super important! This is what you merge on.
+
+poverty_df <- select(poverty_df, 1:9)
+rownames(poverty_df)<-1:nrow(poverty_df)
+names(poverty_df)<-c("GEOID", "didnottotal", "didtotal", "wkids", "married", "otherfam", "maleonly", "femaleonly", "nonfam")
+poverty_df$percent <- 100*(poverty_df$wkids/(poverty_df$didnottotal+poverty_df$didtotal))
+
+## Merge your data. 
+
+poverty_merged<- geo_join(tracts, poverty_df, "GEOID", "GEOID")
+
+# There are some tracts with no land that we should exclude
+
+poverty_merged <- poverty_merged[poverty_merged$ALAND>0,]
+
+## The pop up is what appears when you click on a specific tract, so make sure you update this section depending on the data you are using. 
+popup <- paste0("GEOID: ", poverty_merged$GEOID, "<br>", "Percent of Households w/ Children using SNAP/Food Stamps ", round(poverty_merged$percent,2))
+pal <- colorNumeric(
+  palette = "YlGnBu",
+  domain = poverty_merged$percent
+)
+
+## Finally, we make the map. Again, be careful to tell leaflet which variable you want to use. In this case, I am using percent. I also specify the title and add a suffix. 
+
+map3<-leaflet() %>%
+  addProviderTiles("CartoDB.Positron") %>%
+  addPolygons(data = poverty_merged, 
+              fillColor = ~pal(percent), 
+              color = "#b2aeae", # you need to use hex colors
+              fillOpacity = 0.7, 
+              weight = 1, 
+              smoothFactor = 0.2,
+              popup = popup) %>%
+  addLegend(pal = pal, 
+            values = poverty_merged$percent, 
+            position = "bottomright", 
+            title = "Percent of Households<br>w/ Children using SNAP/Food Stamps",
+            labFormat = labelFormat(suffix = "%")) 
+
+# Call your map and bask in your glory. 
+map3
+
+```
+
+Ok, if you've stayed with me this far, let's dive deeper into mapping with ACS data using tigris/acs/leaflet packages. What happens if we don't want to plot our data on the tract level? What if instead, I want to plot my data on the school district level? I thought it would be easy, but I ran into a few issues that I am going to walk you through. 
+
+Below, I create a map for median income for all Salt Lake County school districts. One thing to keep in mind is ACS data distinguishes school districts differently depending on your state. Utah has unified school districts, but if you're trying to map a different type of school district, you'll need to use the slighly different acs/tigris functions. 
+
+```{r SCLO school district map, warning=FALSE, message=FALSE, results='hide'}
+
+## These are the packages you'll need. tigris, acs, and leaflet do all of the heavy lifting. If you don't have them yet, use install.packages and then load them up below. 
+
+library(tigris)
+library(acs)
+library(stringr)
+library(dplyr)
+library(leaflet)
+library(ggplot2)
+library(tidyr)
+
+## The first issue I ran into was I thought the school districts would be at the county level, so I kept trying to call them using the county FIPS number. NOPE! School district is right under state, so you just specify state, then specify the type of district, which in this case, is unified. 
+
+counties <- c(035)
+schooldistrictunified <- school_districts(state = 'UT', type = "unified")
+```
+
+```{r message=FALSE, warning=FALSE}
+
+## We now need to create a geographic data set (it's a spatial data set) so you can grab the tigris and acs data. I specify the state, but remember that school districts are a geography right below state, so no need to go in at the county level this time. I am just going to grab every school district in Utah, because for me it's easier than looking them up individually. 
+
+geo <- geo.make(state=c("UT"), 
+                school.district.unified ="*") 
+
+## Now we need to fetch the ACS data, using the acs package function acs.fetch. I specify the end year, which you should know once you decide which table you want. I found my table using this handy website: https://censusreporter.org/topics/table-codes/ I also specify that my geography should be the geo data I pulled above. I tell the column names to look pretty for me.
+
+income <- acs.fetch(endyear = 2015, span = 5, geography = geo, 
+                     table.number = "B19013", col.names = "pretty")
+
+#names(attributes(poverty))
+# [1] "endyear"        "span"           "acs.units"      "currency.year"  "modified"       "geography"      "acs.colnames"  
+# [8] "estimate"       "standard.error" "class"    
+
+## Comment the line below to see the column names. Hopefully you have a pretty good idea which column names you want to use, since you've already looked through the table at censusreporter.org
+
+#attr(poverty, "acs.colnames")
+
+## I've decided which columns I want to use, and now I need to convert my file to a data frame so I can merge it. str_pad adds extra numbers to each specified variable, because it won't merge if we don't add leading zeros! Remember, we aren't including county anymore! Also, the leading zeroes you have to pad with are 5 for school districts! Don't get scared, this should run pretty smoothly. Finally, paste in the column names you want to keep the income@estimate function. I'm only keeping one.  
+
+income_df <- data.frame(paste0(str_pad(income@geography$state, 2, "left", pad="0"), 
+                                str_pad(income@geography$schooldistrictunified, 5, "left", pad = "0")), 
+                         income@estimate[,c("B19013. Median Household Income in the Past 12 Months (in 2015 Inflation-Adjusted Dollars): Median household income in the past 12 months (in 2015 Inflation-adjusted dollars)")],
+                         stringsAsFactors = FALSE)
+
+## Ok, now you need to shape the data frame by selecting which columns you want and naming each row. GEOID is suepr important! It's what you merge on. It's how both of your files identify your school districts. 
+
+income_df <- select(income_df, 1:2)
+rownames(income_df)<-1:nrow(income_df)
+names(income_df)<-c("GEOID", "medianincome")
+
+## Time to merge. 
+
+income_merged<- geo_join(schooldistrictunified, income_df, "GEOID", "GEOID", how="inner")
+
+## This is another part of doing school districts that's tricky. You have to choose to keep the school districts you want within Utah. In this case, I only want the five districts in Salt Lake County. If I wanted all of the Utah school districts, I would skip this step. 
+
+income_merged <- income_merged[income_merged$GEOID %in% c(4900870, 4900420, 4900360, 4900142, 4900600),]
+
+
+## The pop up is what appears when you click on a specific school district, so make sure you update this section depending on the data you are using. Also update the varible, which is domain below. 
+
+popup <- paste0("<b>", income_merged$NAME, "</b><br>", "Median Household Income: ", prettyNum(round(income_merged$medianincome,2), big.mark=","))
+pal <- colorNumeric(
+  palette = "YlGnBu",
+  domain = income_merged$medianincome
+)
+
+## Finally, we make the map. Again, be careful to tell leaflet which variable you want to use. I also specify the title and add a suffix. 
+
+map6 <- leaflet() %>%
+  addProviderTiles("CartoDB.Positron") %>%
+  addPolygons(data = income_merged, 
+              fillColor = ~pal(medianincome), 
+              color = "#b2aeae", # you need to use hex colors
+              fillOpacity = 0.7, 
+              weight = 1, 
+              smoothFactor = 0.2,
+              popup = popup) %>%
+  addLegend(pal = pal, 
+            values = income_merged$medianincome, 
+            position = "bottomright", 
+            title = "Median Household Income"
+           ) 
+map6
+
+```
+
+See, that was easy! 
+
+Now go out into the world and make one million maps. 
+
+
+```
+
+
+
