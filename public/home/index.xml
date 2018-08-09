@@ -40,26 +40,27 @@
     </item>
     
     <item>
-      <title>Media</title>
-      <link>/home/talks/</link>
+      <title>Publications</title>
+      <link>/home/publications_selected/</link>
       <pubDate>Wed, 20 Apr 2016 00:00:00 +0000</pubDate>
       
-      <guid>/home/talks/</guid>
+      <guid>/home/publications_selected/</guid>
+      <description>&amp;ldquo;Testimonials Do Not Convert Patients from Brand to Generic Medication&amp;rdquo;, Am J Manag Care. 2013 Sep;19(9):e314-e331.
+&amp;ldquo;Vaccination rates are associated with functional proximity but not base proximity of vaccination clinics&amp;rdquo;, Med Car. 2016 Jun;54(6):578-583.</description>
+    </item>
+    
+    <item>
+      <title>Media</title>
+      <link>/home/media/</link>
+      <pubDate>Wed, 20 Apr 2016 00:00:00 +0000</pubDate>
+      
+      <guid>/home/media/</guid>
       <description>&amp;ldquo;North Coast preschool advocates prepare for pilot study&amp;rdquo;, Daily Astorian, July 6, 2018.
 &amp;ldquo;What This Salt Lake City Heatmap Tells Us About Drug Crime&amp;rdquo;, CityLab, August 11, 2017.
 &amp;ldquo;Is Utah&amp;rsquo;s prison reform working?&amp;rdquo;, Deseret News, August 5th, 2017.
 &amp;ldquo;Roth vs. Traditional 401(k): Study Finds a Clear Winner&amp;rdquo;, Wall Street Journal, June 11, 2017.
 &amp;ldquo;Why Don&amp;rsquo;t More People Get Flu Shots at Work?&amp;rdquo;, Harvard Business School, October 5, 2016.
 &amp;ldquo;Don&amp;rsquo;t Compare Your Savings to That of Your Peers&amp;rdquo;, Wall Street Journal, September 20, 2015.</description>
-    </item>
-    
-    <item>
-      <title>Publications</title>
-      <link>/home/publications/</link>
-      <pubDate>Wed, 20 Apr 2016 00:00:00 -0600</pubDate>
-      
-      <guid>/home/publications/</guid>
-      <description></description>
     </item>
     
     <item>

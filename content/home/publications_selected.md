@@ -1,38 +1,24 @@
 +++
-# Recent Publications widget.
-# This widget displays recent publications from `content/publication/`.
-widget = "publications_selected"
+# Custom widget.
+# An example of using the custom widget to create your own homepage section.
+# To create more sections, duplicate this file and edit the values below as desired.
+widget = "custom"
 active = true
-date = 2016-04-20T00:00:00
+date = "2016-04-20T00:00:00"
 
+# Note: a full width section format can be enabled by commenting out the `title` and `subtitle` with a `#`.
 title = "Publications"
 subtitle = ""
 
 # Order that this section will appear in.
-weight = 20
+weight = 3
 
-# Number of publications to list.
-count = 10
-
-# List format.
-#   0 = Simple
-#   1 = Detailed
-#   2 = APA
-#   3 = MLA
-list_format = 3
-
-# Filter by publication type.
-# -1: Any
-#  0: Uncategorized
-#  1: Conference proceedings
-#  2: Journal
-#  3: Work in progress
-#  4: Technical report
-#  5: Book
-#  6: Book chapter
-publication_type = "-1"
-
-# Exclude publications that are shown in the Selected Publications widget?
-exclude_selected = false
 +++
+
+["Testimonials Do Not Convert Patients from Brand to Generic Medication"](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3902665/), *Am J Manag Care.* 2013 Sep;19(9):e314-e331.
+
+["Vaccination rates are associated with functional proximity but not base proximity of vaccination clinics"](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4868403/), *Med Car.* 2016 Jun;54(6):578-583.
+
+
+
 
